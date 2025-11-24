@@ -43,8 +43,10 @@ for file in *; do
         echo "📁 Created directory: $extension_lower/"
     fi
     
-    # Move file to its extension directory
-    if [[ -f "$file" ]]; then
+    # Move file to its extension directory (skip if target already exists)
+    if [[ -f "$extension_lower/$file" ]]; then
+        echo "  ⚠️  Skipped: $file (already exists in $extension_lower/)"
+    else
         mv "$file" "$extension_lower/"
         echo "  ➡️  Moved: $file → $extension_lower/"
     fi

@@ -14,6 +14,12 @@ fi
 
 PORT=$1
 
+# Validate port number
+if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; then
+    echo "❌ Error: Invalid port number. Must be between 1 and 65535."
+    exit 1
+fi
+
 echo "🔍 Checking port $PORT..."
 echo ""
 
