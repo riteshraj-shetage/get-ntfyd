@@ -36,7 +36,7 @@ if command -v lsof &> /dev/null; then
     fi
 elif command -v netstat &> /dev/null; then
     # Using netstat (Linux/Windows)
-    PROCESS=$(netstat -tulpn 2>/dev/null | grep ":$PORT " || true)
+    PROCESS=$(netstat -tulpn 2>/dev/null | grep -E ":$PORT[[:space:]]" || true)
     
     if [[ -z "$PROCESS" ]]; then
         echo "✅ Port $PORT is available"

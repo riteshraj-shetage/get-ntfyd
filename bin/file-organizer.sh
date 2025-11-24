@@ -33,7 +33,7 @@ for file in *; do
     # Skip files without extensions
     [[ "$file" == *.* ]] || continue
     
-    # Get file extension
+    # Get file extension (for files with multiple dots like file.tar.gz, uses the last extension)
     extension="${file##*.}"
     extension_lower=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
     

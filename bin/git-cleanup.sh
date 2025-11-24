@@ -45,7 +45,7 @@ else
     if [[ "$DRY_RUN" == false ]]; then
         echo "🗑️  Deleting merged branches..."
         while IFS= read -r branch; do
-            git branch -d "$branch"
+            git branch -d -- "$branch"
         done <<< "$MERGED_BRANCHES"
         echo "✅ Cleanup complete!"
     else
