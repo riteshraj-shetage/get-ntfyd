@@ -26,9 +26,12 @@ echo "📊 Found $FILE_COUNT files to organize"
 echo ""
 
 # Organize files by extension
-for file in *.*; do
-    # Skip if no files match
-    [[ -e "$file" ]] || continue
+for file in *; do
+    # Skip if no files match or if it's a directory
+    [[ -f "$file" ]] || continue
+    
+    # Skip files without extensions
+    [[ "$file" == *.* ]] || continue
     
     # Get file extension
     extension="${file##*.}"

@@ -44,7 +44,7 @@ else
     
     if [[ "$DRY_RUN" == false ]]; then
         echo "🗑️  Deleting merged branches..."
-        echo "$MERGED_BRANCHES" | xargs -r git branch -d
+        echo "$MERGED_BRANCHES" | xargs git branch -d
         echo "✅ Cleanup complete!"
     else
         echo "ℹ️  Run without --dry-run to delete these branches"

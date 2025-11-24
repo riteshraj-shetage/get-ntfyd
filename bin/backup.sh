@@ -42,7 +42,7 @@ if [[ -d "$SOURCE" ]]; then
     echo "Destination: $BACKUP_PATH"
     echo ""
     
-    tar -czf "$BACKUP_PATH" -C "$(dirname "$SOURCE")" "$BASENAME"
+    tar -czf "$BACKUP_PATH" -C "$(dirname -- "$SOURCE")" "$BASENAME"
     
     SIZE=$(du -h "$BACKUP_PATH" | cut -f1)
     echo "✅ Backup created: $BACKUP_PATH ($SIZE)"
