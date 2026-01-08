@@ -1,0 +1,24 @@
+# ntfy server config file (to be changed as needed)
+
+listen-http: ":${NTFY_HTTP_PORT}"
+base-url: "${NTFY_BASE_URL}"
+
+# Persistence
+cache-file: "${NTFY_CACHE_FILE}"
+
+# Attachments
+attachment-cache-dir: "${NTFY_ATTACHMENT_CACHE_DIR}"
+attachment-cache-size: "${NTFY_ATTACHMENT_CACHE_SIZE}"
+
+# Auth
+auth-file: "${NTFY_AUTH_FILE}"
+enable-auth: ${NTFY_ENABLE_AUTH}
+allow-anonymous: ${NTFY_ALLOW_ANONYMOUS}
+
+# Rate limiting (sane defaults; tune per project)
+visitor-request-limit: 60/min
+visitor-topic-limit: 20/min
+visitor-subscription-limit: 10/min
+
+# CORS and headers (optional; useful when integrating frontend apps)
+cors: ["*"]

@@ -1,0 +1,15 @@
+# Environment vars (configs)
+.env
+
+# Docker volumes and runtime data
+data/
+caddy_data/
+caddy_config/
+
+# ntfy auth and cache
+ntfy/users.db
+ntfy/cache.db
+ntfy/attachments/
+
+# Backup contents
+backups/

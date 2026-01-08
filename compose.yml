@@ -1,0 +1,40 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: ${PROJECT_NAME}-ntfy
+    command: ["serve", "--config=/etc/ntfy/server.yml"]
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${NTFY_HTTP_PORT}:${NTFY_HTTP_PORT}" 
+    volumes:
+      - ./ntfy/server.yml:/etc/ntfy/server.yml:ro
+      - ./ntfy/users.db:/etc/ntfy/users.db
+      - ./data:/var/lib/ntfy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:${NTFY_HTTP_PORT}/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  caddy:
+    image: caddy:2
+    container_name: ${PROJECT_NAME}-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - EMAIL=${EMAIL}
+      - NTFY_HTTP_PORT=${NTFY_HTTP_PORT}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data      
+      - caddy_config:/config
+    depends_on:
+      ntfy:
+        condition: service_healthy
+
+volumes:
+  caddy_data:
+  caddy_config:
