@@ -1,24 +1,79 @@
-# ntfy server config file (to be changed as needed)
+# ntfy server configuration
+# Official docs: https://docs.ntfy.sh/config/
 
-listen-http: ":${NTFY_HTTP_PORT}"
-base-url: "${NTFY_BASE_URL}"
+# Base URL - REQUIRED: must match your public domain with https://
+# TODO: Change this to your actual domain before deploying!
+base-url: "https://notify.example.com"
 
-# Persistence
-cache-file: "${NTFY_CACHE_FILE}"
+# Behind proxy - REQUIRED for proper rate limiting with Caddy
+behind-proxy: true
 
-# Attachments
-attachment-cache-dir: "${NTFY_ATTACHMENT_CACHE_DIR}"
-attachment-cache-size: "${NTFY_ATTACHMENT_CACHE_SIZE}"
+# Cache file for message persistence
+cache-file: "/var/lib/ntfy/cache.db"
 
-# Auth
-auth-file: "${NTFY_AUTH_FILE}"
-enable-auth: ${NTFY_ENABLE_AUTH}
-allow-anonymous: ${NTFY_ALLOW_ANONYMOUS}
+# Message cache duration
+cache-duration: "12h"
 
-# Rate limiting (sane defaults; tune per project)
-visitor-request-limit: 60/min
-visitor-topic-limit: 20/min
-visitor-subscription-limit: 10/min
+# Keepalive interval for open connections
+keepalive-interval: "45s"
 
-# CORS and headers (optional; useful when integrating frontend apps)
-cors: ["*"]
+# Attachment cache directory
+attachment-cache-dir: "/var/lib/ntfy/attachments"
+
+# Attachment limits
+attachment-total-size-limit: "5G"
+attachment-file-size-limit: "15M"
+attachment-expiry-duration: "3h"
+
+# Authentication settings
+auth-file: "/var/lib/ntfy/users.db"
+auth-default-access: "deny-all"
+
+# User and access provisioning (examples - commented out by default)
+# Uncomment and modify as needed, or use CLI to manage users/tokens
+# auth-users:
+#   - name: admin
+#     password: "$argon2id$v=19$m=65536,t=3,p=2$..."  # Use 'ntfy user add' to generate
+#     role: admin
+#   - name: user1
+#     password: "$argon2id$v=19$m=65536,t=3,p=2$..."
+#     role: user
+
+# Access control list (examples - commented out by default)
+# auth-access:
+#   - topic: "announcements"
+#     access: "read-only"
+#   - topic: "alerts"
+#     access: "write-only"
+#     user: "user1"
+#   - topic: "admin-*"
+#     access: "read-write"
+#     user: "admin"
+
+# Access tokens (examples - commented out by default)
+# auth-tokens:
+#   - topic: "mytopic"
+#     token: "tk_AgQdq7mVBoFD37zQVN29RhuMzNIz2"
+#     access: "write-only"
+
+# SMTP configuration for outbound email notifications
+# Uncomment and configure to enable email notifications
+# smtp-sender-addr: "smtp.gmail.com:587"
+# smtp-sender-from: "ntfy@example.com"
+# smtp-sender-user: "your-email@gmail.com"
+# smtp-sender-pass: "your-app-password"
+
+# Visitor limits (rate limiting per visitor, not per proxy IP)
+visitor-subscription-limit: 30
+visitor-request-limit-burst: 60
+visitor-request-limit-replenish: "5s"
+visitor-message-daily-limit: 0  # 0 = unlimited
+
+# Web UI settings
+enable-signup: false  # Disable public signups for security
+enable-login: true
+enable-reservations: false
+
+# Metrics (optional)
+# enable-metrics: false
+# metrics-listen-http: ":9090"
