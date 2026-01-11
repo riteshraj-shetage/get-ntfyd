@@ -1,18 +1,23 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
-TS=$(date +%Y%m%d-%H%M%S)
-BACKUP_DIR="./backup/$TS"
+BACKUP_DIR="./backup"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_NAME="ntfy-backup-${TIMESTAMP}"
+BACKUP_PATH="${BACKUP_DIR}/${BACKUP_NAME}"
 
-mkdir -p "$BACKUP_DIR"
+mkdir -p "${BACKUP_PATH}"/{ntfy,caddy,config}
 
-# Copy critical files
-cp -a ./ntfy/users.db "$BACKUP_DIR/"
-cp -a ./data "$BACKUP_DIR/data"
-cp -a ./ntfy/server.yml ./caddy/Caddyfile ./.env "$BACKUP_DIR/"
+docker cp ntfy:/var/lib/ntfy "${BACKUP_PATH}/ntfy/data" 2>/dev/null || true
+docker cp ntfy:/var/cache/ntfy "${BACKUP_PATH}/ntfy/cache" 2>/dev/null || true
 
-# Archive
-tar -czf "./backup/ntfy-backup-$TS.tar.gz" -C "$BACKUP_DIR" .
-rm -rf "$BACKUP_DIR"
+cp -r ./ntfy "${BACKUP_PATH}/config/"
+cp -r ./caddy "${BACKUP_PATH}/config/"
+cp .env "${BACKUP_PATH}/config/" 2>/dev/null || true
+cp compose.yml "${BACKUP_PATH}/config/"
 
-echo "Backup created: ./backup/ntfy-backup-$TS.tar.gz"
+docker cp caddy:/data "${BACKUP_PATH}/caddy/data" 2>/dev/null || true
+
+cd "${BACKUP_DIR}"
+tar -czf "${BACKUP_NAME}.tar.gz" "${BACKUP_NAME}"
+rm -rf "${BACKUP_NAME}"
