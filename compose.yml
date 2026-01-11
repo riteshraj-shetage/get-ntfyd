@@ -1,40 +1,46 @@
 services:
   ntfy:
     image: binwiederhier/ntfy:latest
-    container_name: ${PROJECT_NAME}-ntfy
-    command: ["serve", "--config=/etc/ntfy/server.yml"]
+    container_name: ntfy
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:${NTFY_HTTP_PORT}:${NTFY_HTTP_PORT}" 
+    command: serve
+    environment:
+      - TZ=UTC
     volumes:
       - ./ntfy/server.yml:/etc/ntfy/server.yml:ro
-      - ./ntfy/users.db:/etc/ntfy/users.db
-      - ./data:/var/lib/ntfy
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:${NTFY_HTTP_PORT}/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ntfy-cache:/var/cache/ntfy
+      - ntfy-data:/var/lib/ntfy
+    networks:
+      - ntfy-network
+    ports:
+      - "127.0.0.1:2586:80"
 
   caddy:
-    image: caddy:2
-    container_name: ${PROJECT_NAME}-caddy
+    image: caddy:2-alpine
+    container_name: caddy
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"  # HTTP/3
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - ntfy-network
     environment:
       - DOMAIN=${DOMAIN}
       - EMAIL=${EMAIL}
-      - NTFY_HTTP_PORT=${NTFY_HTTP_PORT}
-    volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data      
-      - caddy_config:/config
     depends_on:
-      ntfy:
-        condition: service_healthy
+      - ntfy
+
+networks:
+  ntfy-network:
+    driver: bridge
 
 volumes:
-  caddy_data:
-  caddy_config:
+  ntfy-cache:
+  ntfy-data:
+  caddy-data:
+  caddy-config:
