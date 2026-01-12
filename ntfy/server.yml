@@ -1,79 +1,34 @@
 # ntfy server configuration
 # Official docs: https://docs.ntfy.sh/config/
 
-# Base URL - REQUIRED: must match your public domain with https://
-# TODO: Change this to your actual domain before deploying!
-base-url: "https://notify.example.com"
+# Web UI settings
+enable-signup: false       # Disable public signups for security
+enable-login: true         # Enable login page
+enable-reservations: false # Disable topic reservations (use ACLs instead)
 
-# Behind proxy - REQUIRED for proper rate limiting with Caddy
-behind-proxy: true
-
-# Cache file for message persistence
-cache-file: "/var/lib/ntfy/cache.db"
-
-# Message cache duration
-cache-duration: "12h"
-
-# Keepalive interval for open connections
-keepalive-interval: "45s"
-
-# Attachment cache directory
-attachment-cache-dir: "/var/lib/ntfy/attachments"
-
-# Attachment limits
-attachment-total-size-limit: "5G"
-attachment-file-size-limit: "15M"
-attachment-expiry-duration: "3h"
-
-# Authentication settings
-auth-file: "/var/lib/ntfy/users.db"
+# Default access policy (deny-all recommended for production)
 auth-default-access: "deny-all"
 
-# User and access provisioning (examples - commented out by default)
-# Uncomment and modify as needed, or use CLI to manage users/tokens
-# auth-users:
-#   - name: admin
-#     password: "$argon2id$v=19$m=65536,t=3,p=2$..."  # Use 'ntfy user add' to generate
-#     role: admin
-#   - name: user1
-#     password: "$argon2id$v=19$m=65536,t=3,p=2$..."
-#     role: user
+# Behind proxy setting (assumes reverse proxy like Caddy/nginx)
+behind-proxy: true
 
-# Access control list (examples - commented out by default)
-# auth-access:
-#   - topic: "announcements"
-#     access: "read-only"
-#   - topic: "alerts"
-#     access: "write-only"
-#     user: "user1"
-#   - topic: "admin-*"
-#     access: "read-write"
-#     user: "admin"
+# Storage paths
+cache-file: "/var/lib/ntfy/cache.db"
+attachment-cache-dir: "/var/lib/ntfy/attachments"
+auth-file: "/var/lib/ntfy/users.db"
 
-# Access tokens (examples - commented out by default)
-# auth-tokens:
-#   - topic: "mytopic"
-#     token: "tk_AgQdq7mVBoFD37zQVN29RhuMzNIz2"
-#     access: "write-only"
+# Cache settings
+cache-duration: "12h"               # How long messages are cached
+keepalive-interval: "45s"           # WebSocket keepalive interval
 
-# SMTP configuration for outbound email notifications
-# Uncomment and configure to enable email notifications
-# smtp-sender-addr: "smtp.gmail.com:587"
-# smtp-sender-from: "ntfy@example.com"
-# smtp-sender-user: "your-email@gmail.com"
-# smtp-sender-pass: "your-app-password"
+# Attachment settings
+attachment-total-size-limit: "5G"   # Total size for all attachments
+attachment-file-size-limit: "15M"   # Maximum size per attachment
+attachment-expiry-duration: "3h"    # How long attachments are kept
 
-# Visitor limits (rate limiting per visitor, not per proxy IP)
-visitor-subscription-limit: 30
-visitor-request-limit-burst: 60
-visitor-request-limit-replenish: "5s"
-visitor-message-daily-limit: 0  # 0 = unlimited
-
-# Web UI settings
-enable-signup: false  # Disable public signups for security
-enable-login: true
-enable-reservations: false
-
-# Metrics (optional)
-# enable-metrics: false
-# metrics-listen-http: ":9090"
+# Rate Limiting Defaults (Proxy-Aware)
+# These limits apply per visitor IP (not the proxy IP when behind-proxy: true)
+visitor-subscription-limit: 30              # Max subscriptions per visitor
+visitor-request-limit-burst: 60             # Burst requests allowed
+visitor-request-limit-replenish: "5s"       # Rate at which requests replenish
+visitor-message-daily-limit: 0              # 0 = unlimited daily messages
