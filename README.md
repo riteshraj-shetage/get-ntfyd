@@ -1,1 +1,1 @@
-# say-hello
+# get-ntfyd
