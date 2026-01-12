@@ -1,6 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+if [[ -f "$PROJECT_DIR/.env" ]]; then
+    set -a
+    source "$PROJECT_DIR/.env"
+    set +a
+fi
+
+cd "$PROJECT_DIR"
+
 BACKUP_DIR="./backup"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BACKUP_NAME="ntfy-backup-${TIMESTAMP}"
@@ -21,3 +32,5 @@ docker cp caddy:/data "${BACKUP_PATH}/caddy/data" 2>/dev/null || true
 cd "${BACKUP_DIR}"
 tar -czf "${BACKUP_NAME}.tar.gz" "${BACKUP_NAME}"
 rm -rf "${BACKUP_NAME}"
+
+echo "Backup created: ${BACKUP_NAME}.tar.gz"
