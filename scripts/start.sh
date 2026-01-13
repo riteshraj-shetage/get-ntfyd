@@ -13,6 +13,8 @@ set -a
 source .env
 set +a
 
+sudo timedatectl set-timezone "$TZ"
+
 [ -z "$DOMAIN" ] && { echo "Error: DOMAIN not set"; exit 1; }
 [ -z "$EMAIL" ] && { echo "Error: EMAIL not set"; exit 1; }
 [ -z "$NTFY_BASE_URL" ] && { echo "Error: NTFY_BASE_URL not set"; exit 1; }
