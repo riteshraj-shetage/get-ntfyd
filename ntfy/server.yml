@@ -6,10 +6,10 @@ enable-signup: false       # Disable public signups for security
 enable-login: true         # Enable login page
 enable-reservations: false # Disable topic reservations (use ACLs instead)
 
-# Default access policy (deny-all recommended for production)
+# Default access policy 
 auth-default-access: "deny-all"
 
-# Behind proxy setting (assumes reverse proxy like Caddy/nginx)
+# Behind proxy setting
 behind-proxy: true
 
 # Storage paths
@@ -18,17 +18,17 @@ attachment-cache-dir: "/var/lib/ntfy/attachments"
 auth-file: "/var/lib/ntfy/users.db"
 
 # Cache settings
-cache-duration: "12h"               # How long messages are cached
-keepalive-interval: "45s"           # WebSocket keepalive interval
+cache-duration: "12h"            
+keepalive-interval: "45s"        
 
 # Attachment settings
-attachment-total-size-limit: "5G"   # Total size for all attachments
-attachment-file-size-limit: "15M"   # Maximum size per attachment
-attachment-expiry-duration: "3h"    # How long attachments are kept
+attachment-total-size-limit: "5G"   
+attachment-file-size-limit: "15M"   
+attachment-expiry-duration: "3h"   
 
 # Rate Limiting Defaults (Proxy-Aware)
 # These limits apply per visitor IP (not the proxy IP when behind-proxy: true)
-visitor-subscription-limit: 30              # Max subscriptions per visitor
-visitor-request-limit-burst: 60             # Burst requests allowed
-visitor-request-limit-replenish: "5s"       # Rate at which requests replenish
+visitor-subscription-limit: 30            
+visitor-request-limit-burst: 60            
+visitor-request-limit-replenish: "5s"      
 visitor-message-daily-limit: 0              # 0 = unlimited daily messages
