@@ -29,18 +29,11 @@ services:
       context: ./gateway
     container_name: gateway
     restart: unless-stopped
-    environment:
-      - GATEWAY_API_KEY=${GATEWAY_API_KEY}
-      - DEFAULT_TENANT_ID=${DEFAULT_TENANT_ID}
-      - NTFY_INTERNAL_URL=http://ntfy:80
-      - NTFY_PUBLISH_USER=${NTFY_PUBLISH_USER}
-      - NTFY_PUBLISH_PASS=${NTFY_PUBLISH_PASS}
     networks:
       - ntfy-network
-    depends_on:
-      - ntfy
-    ports:
-      - "127.0.0.1:8585:8000"
+    # optional: keeping it private; Caddy will reach it via docker network
+    # ports:
+    #   - "127.0.0.1:8585:8000"
 
   caddy:
     image: caddy:2-alpine
@@ -61,6 +54,7 @@ services:
       - EMAIL=${EMAIL}
     depends_on:
       - ntfy
+      - gateway
 
 networks:
   ntfy-network:
