@@ -21,4 +21,5 @@ sudo timedatectl set-timezone "$TZ"
 
 docker compose up -d
 
+echo "gateway is starting at https://${DOMAIN}/api/health"
 echo "ntfy is starting at https://${DOMAIN}"
