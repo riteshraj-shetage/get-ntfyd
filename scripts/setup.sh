@@ -34,6 +34,8 @@ mkdir -p "$PROJECT_DIR/backup"
 mkdir -p "$PROJECT_DIR/caddy"
 mkdir -p "$PROJECT_DIR/ntfy"
 
+chmod +x "$PROJECT_DIR"/scripts/*.sh || true
+
 echo "Setup complete."
 echo ""
 echo -e "\033[1;33mIMPORTANT:\033[0m Before running 'make start', run: \033[7mnewgrp docker\033[0m (or log out/in)."
