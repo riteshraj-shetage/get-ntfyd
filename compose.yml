@@ -50,7 +50,7 @@ services:
     networks:
       - ntfy-network
     environment:
-      - DOMAIN=${DOMAIN}
+      - PUBLIC_HOST=${PUBLIC_HOST}
       - EMAIL=${EMAIL}
     depends_on:
       - ntfy
