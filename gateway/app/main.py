@@ -3,6 +3,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+NTFY_BASE_URL = os.getenv("NTFY_BASE_URL")
 DEFAULT_TENANT_ID = os.getenv("DEFAULT_TENANT_ID", "default")
 
 
