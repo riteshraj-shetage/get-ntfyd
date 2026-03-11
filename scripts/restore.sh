@@ -26,20 +26,22 @@ tar -xzf "${BACKUP_ARCHIVE}" -C "${TEMP_DIR}"
 BACKUP_NAME=$(basename "${BACKUP_ARCHIVE}" .tar.gz)
 BACKUP_PATH="${TEMP_DIR}/${BACKUP_NAME}"
 
-PROJECT_NAME=$(basename "$PROJECT_DIR")
+NTFY_DATA_VOLUME="ntfy-data"
+NTFY_CACHE_VOLUME="ntfy-cache"
+CADDY_DATA_VOLUME="caddy-data"
 
 [ -d "${BACKUP_PATH}/ntfy/data" ] && docker run --rm \
-    -v "${PROJECT_NAME}_ntfy-data:/restore-target" \
+    -v "${NTFY_DATA_VOLUME}:/restore-target" \
     -v "${BACKUP_PATH}/ntfy/data:/backup:ro" \
     alpine sh -c "rm -rf /restore-target/* /restore-target/.[!.]* 2>/dev/null; cp -a /backup/. /restore-target/"
 
 [ -d "${BACKUP_PATH}/ntfy/cache" ] && docker run --rm \
-    -v "${PROJECT_NAME}_ntfy-cache:/restore-target" \
+    -v "${NTFY_CACHE_VOLUME}:/restore-target" \
     -v "${BACKUP_PATH}/ntfy/cache:/backup:ro" \
     alpine sh -c "rm -rf /restore-target/* /restore-target/.[!.]* 2>/dev/null; cp -a /backup/. /restore-target/"
 
 [ -d "${BACKUP_PATH}/caddy/data" ] && docker run --rm \
-    -v "${PROJECT_NAME}_caddy-data:/restore-target" \
+    -v "${CADDY_DATA_VOLUME}:/restore-target" \
     -v "${BACKUP_PATH}/caddy/data:/backup:ro" \
     alpine sh -c "rm -rf /restore-target/* /restore-target/.[!.]* 2>/dev/null; cp -a /backup/. /restore-target/"
 
