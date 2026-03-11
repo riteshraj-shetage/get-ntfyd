@@ -19,6 +19,11 @@ sudo timedatectl set-timezone "$TZ"
 [ -z "$EMAIL" ] && { echo "Error: EMAIL not set"; exit 1; }
 [ -z "$NTFY_BASE_URL" ] && { echo "Error: NTFY_BASE_URL not set"; exit 1; }
 
+if ! docker ps >/dev/null 2>&1; then
+  echo -e "\033[1;33mIMPORTANT:\033[0m Run \033[7mnewgrp docker\033[0m (or log out/in) then try again."
+  exit 1
+fi
+
 docker compose up -d
 
 echo "gateway is starting at https://${DOMAIN}/api/health"
