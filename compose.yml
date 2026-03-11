@@ -62,6 +62,10 @@ networks:
 
 volumes:
   ntfy-cache:
+    name: ntfy-cache
   ntfy-data:
+    name: ntfy-data
   caddy-data:
+    name: caddy-data
   caddy-config:
+    name: caddy-config
