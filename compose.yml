@@ -36,7 +36,7 @@ services:
       - DEFAULT_TENANT_ID=${DEFAULT_TENANT_ID:-default}
 
   caddy:
-    image: caddy:2-alpine
+    image: caddy:2.11.2-alpine
     container_name: caddy
     restart: unless-stopped
     ports:
