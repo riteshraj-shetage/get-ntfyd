@@ -13,7 +13,9 @@ set -a
 source .env
 set +a
 
-sudo timedatectl set-timezone "$TZ"
+if command -v timedatectl >/dev/null 2>&1 && [ "$(id -u)" -eq 0 ]; then
+  timedatectl set-timezone "$TZ"
+fi
 
 [ -z "$PUBLIC_HOST" ] && { echo "Error: PUBLIC_HOST not set"; exit 1; }
 [ -z "$EMAIL" ] && { echo "Error: EMAIL not set"; exit 1; }
