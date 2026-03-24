@@ -23,8 +23,6 @@ services:
       - ntfy-data:/var/lib/ntfy
     networks:
       - ntfy-network
-    ports:
-      - "127.0.0.1:2586:80"
 
   gateway:
     build:
@@ -33,9 +31,6 @@ services:
     restart: unless-stopped
     networks:
       - ntfy-network
-    # optional: keeping it private; Caddy will reach it via docker network
-    # ports:
-    #   - "127.0.0.1:8585:8000"
     environment:
       - NTFY_BASE_URL=${NTFY_BASE_URL:-http://ntfy}
       - DEFAULT_TENANT_ID=${DEFAULT_TENANT_ID:-default}
