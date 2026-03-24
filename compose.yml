@@ -25,6 +25,7 @@ services:
       - ntfy-network
 
   gateway:
+    image: get-ntfyd-gateway:dev
     build:
       context: ./gateway
     container_name: gateway
