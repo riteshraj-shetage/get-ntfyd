@@ -22,7 +22,7 @@ start:
 	@./scripts/start.sh
 
 stop:
-	@docker compose down
+	@./scripts/stop.sh
 
 restart:
 	@docker compose restart
