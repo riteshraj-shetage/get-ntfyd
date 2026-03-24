@@ -25,7 +25,7 @@ stop:
 	@./scripts/stop.sh
 
 restart:
-	@docker compose restart
+	@./scripts/restart.sh
 
 status:
 	@docker compose ps
