@@ -1,16 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_env.sh"
 
 if [[ -f "$PROJECT_DIR/.env" ]]; then
     set -a
     source "$PROJECT_DIR/.env"
     set +a
 fi
-
-cd "$PROJECT_DIR"
 
 [ $# -eq 0 ] && echo "Usage: $0 <backup-archive.tar.gz>" && exit 1
 

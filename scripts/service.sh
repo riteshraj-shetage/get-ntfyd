@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_env.sh"
+
 
 check_services() {
     cd "$PROJECT_DIR"
