@@ -28,10 +28,10 @@ restart:
 	@./scripts/restart.sh
 
 status:
-	@docker compose ps
+	@./scripts/status.sh
 
 logs:
-	@docker compose logs -f
+	@./scripts/logs.sh
 
 service:
 	@./scripts/service.sh
