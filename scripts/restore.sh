@@ -17,7 +17,7 @@ BACKUP_ARCHIVE="$1"
 docker compose down
 
 TEMP_DIR=$(mktemp -d)
-trap "rm -rf ${TEMP_DIR}" EXIT
+trap 'rm -rf ${TEMP_DIR}' EXIT
 
 tar -xzf "${BACKUP_ARCHIVE}" -C "${TEMP_DIR}"
 BACKUP_NAME=$(basename "${BACKUP_ARCHIVE}" .tar.gz)
