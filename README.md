@@ -11,7 +11,7 @@ It gives backend apps a simple HTTP API to send notification intents (`audience`
 - ✅ Helper scripts + Makefile (setup/start/backup/restore/service)
 - ✅ Gateway has a health endpoint: `GET /api/health`
 
-## What’s coming next (gateway becoming “real”)
+## What’s coming next...
 
 - ⏳ `POST /api/v1/notify` will:
   - enforce producer authentication (`Authorization: Bearer <GATEWAY_API_KEY>`)
